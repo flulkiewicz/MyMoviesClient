@@ -4,7 +4,9 @@
 
 		<div class="btn-group" role="group" aria-label="Basic example">
 			<button id="show-modal" class="btn btn-lg btn-success mb-4" @click="showModal = true">Dodaj film</button>
-			<button type="button" class="btn btn-lg btn-secondary mb-4" v-on:click="fetchMovies()">Pobierz filmy z API</button>
+			<button type="button" class="btn btn-lg btn-secondary mb-4" v-on:click="fetchMovies()">
+				Pobierz filmy z API
+			</button>
 		</div>
 
 		<Teleport to="body">
@@ -85,17 +87,17 @@ export default {
 			})
 		},
 		handleModalClose() {
-			this.showModal = false;
-			this.shouldRefresh = true;
+			this.showModal = false
+			this.shouldRefresh = true
 		},
 	},
 	created() {
-		this.refreshMovies();
+		this.refreshMovies()
 	},
 	watch: {
 		shouldRefresh(newVal) {
 			if (newVal) {
-				this.refreshMovies()
+				this.refreshMovies(), (this.shouldRefresh = false)
 			}
 		},
 	},
