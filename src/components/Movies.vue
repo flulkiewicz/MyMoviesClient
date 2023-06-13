@@ -1,16 +1,17 @@
   <template>
-    <div class="container">
-      <h3>Wszystkie filmy </h3>
+    <div class="container bg-dark p-5 rounded text-orange">
+      <h3 class="mb-3">Wszystkie filmy </h3>
       <div v-if="message" class="alert alert-success">{{ this.message }}</div>
       <div class="container">
-        <table class="table">
-          <thead>
+        <table class="table table-dark">
+          <thead class="rounded">
             <tr>
               <th>Id</th>
               <th>Tytuł</th>
               <th>Reżyser</th>
               <th>Rok wydania</th>
               <th>Ocena</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -24,14 +25,14 @@
               
               <td>
                <button class="btn btn-danger" v-on:click="deleteMovie(movie.id)">
-                  Delete
+                  Usuń
                 </button>
               </td>
             </tr>
           </tbody>
         </table>
         <div class="row">
-          <button class="btn btn-success" v-on:click="addMovie()">Add</button>
+          <button class="btn btn-success" v-on:click="addMovie()">Dodaj film</button>
         </div>
       </div>
     </div>

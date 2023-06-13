@@ -1,0 +1,17 @@
+.bg-orange {
+    background-color: #FF6000;
+}
+
+.text-orange {
+    color:#FF6000
+}
+
+.navbar-custom {
+    background-color: #343A40;
+    
+}
+.navbar-custom a {
+    color:#FF6000;
+    font-size: 2rem;
+    font-weight: 600;
+}

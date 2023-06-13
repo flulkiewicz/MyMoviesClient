@@ -1,16 +1,24 @@
 <template>
-  <div class="container">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#"
-        >Moje filmy</a
-      ><br /><br />
-    </div>
-    <router-view />
+	<div class="container text-white">
+    <div class="d-flex justify-content-left">
+		<nav class="navbar navbar-custom bg-dark mt-3 mb-5 justify py-2 px-5 rounded">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="#">Moje filmy</a>
+			</div>
+		</nav>
   </div>
+		<router-view />
+	</div>
+  <br>
+  <br>
 </template>
 
 <script>
 export default {
-  name: "app",
-};
+	name: 'app',
+}
 </script>
+
+<style>
+@import './assets/main.css';
+</style>
