@@ -16,6 +16,9 @@ class MovieDataService {
         return axios.delete(`${MOVIE_API_URL}/${id}`);
     }
 
+    fetchMovies() {
+        return axios.get(`${MOVIE_API_URL}/fetch`);
+    }
     /*
     updateUser(id, movie) {
         return axios.put(`${MOVIE_API_URL}/${id}`, movie);

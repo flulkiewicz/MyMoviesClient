@@ -1,18 +1,22 @@
 <template>
 	<div class="container bg-dark p-5 rounded text-orange">
-		<h3 class="mb-3">Wszystkie filmy</h3>
+		<h3 class="mb-3 border-bottom-orange pb-3 px-2">Wszystkie filmy</h3>
 
-		<button id="show-modal" class="btn btn-lg btn-success mb-4" @click="showModal = true">Dodaj film</button>
+		<div class="btn-group" role="group" aria-label="Basic example">
+			<button id="show-modal" class="btn btn-lg btn-success mb-4" @click="showModal = true">Dodaj film</button>
+			<button type="button" class="btn btn-lg btn-secondary mb-4" v-on:click="fetchMovies()">Pobierz filmy z API</button>
+		</div>
+
 		<Teleport to="body">
 			<!-- use the modal component, pass in the prop -->
-			<modal :show="showModal" @close="showModal = false">
+			<modal :show="showModal" @close="handleModalClose">
 				<template #header>
 					<h3>Dodaj film</h3>
 				</template>
 			</modal>
 		</Teleport>
-    
-		<div v-if="message" class="alert alert-success">{{ this.message }}</div>
+
+		<div v-if="message" class="alert alert-success">{{ message }}</div>
 		<div class="container">
 			<table class="table table-dark">
 				<thead>
@@ -54,6 +58,7 @@ export default {
 			movies: [],
 			message: '',
 			showModal: false,
+			shouldRefresh: false,
 		}
 	},
 	components: {
@@ -66,9 +71,6 @@ export default {
 				this.movies = result.data
 			})
 		},
-		addMovie() {
-			this.$router.push(`/movie/-1`)
-		},
 		updateMovie(id) {
 			this.$router.push(`/movie/${id}`)
 		},
@@ -77,9 +79,25 @@ export default {
 				this.refreshMovies()
 			})
 		},
+		fetchMovies() {
+			MovieDataService.fetchMovies().then(() => {
+				this.refreshMovies()
+			})
+		},
+		handleModalClose() {
+			this.showModal = false;
+			this.shouldRefresh = true;
+		},
 	},
 	created() {
-		this.refreshMovies()
+		this.refreshMovies();
+	},
+	watch: {
+		shouldRefresh(newVal) {
+			if (newVal) {
+				this.refreshMovies()
+			}
+		},
 	},
 }
 </script>
