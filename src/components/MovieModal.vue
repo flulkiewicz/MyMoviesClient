@@ -129,6 +129,8 @@ export default {
 			MovieDataService.createMovie(this.movie).then(() => {
 				this.clearForm()
 				this.$emit('close')
+			}).catch(error => {
+				alert(`Nie udało się dodać filmu do bazy, sprawdź API.\n\n Kod błędu ${error}`)
 			})
 		},
 		async updateMovie() {
@@ -140,6 +142,8 @@ export default {
 			MovieDataService.updateMovie(this.movie).then(() => {
 				this.clearForm()
 				this.$emit('close')
+			}).catch(error => {
+				alert(`Nie udało się zapisać zmian, sprawdź API.\n\n Kod błędu ${error}`)
 			})
 		},
 		clearForm() {

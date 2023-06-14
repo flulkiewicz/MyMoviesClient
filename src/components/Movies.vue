@@ -71,10 +71,14 @@ export default {
 	},
 	methods: {
 		refreshMovies() {
-			MovieDataService.retrieveAllMovies().then(res => {
-				var result = res.data
-				this.movies = result.data
-			})
+			MovieDataService.retrieveAllMovies()
+				.then(res => {
+					var result = res.data
+					this.movies = result.data
+				})
+				.catch(error => {
+					alert(`Błąd w połączeniu z bazą danych, sprawdź API.\n\n Kod błędu ${error}`)
+				})
 		},
 		addMovie() {
 			this.modalHeader = 'Dodaj film'
@@ -86,9 +90,13 @@ export default {
 		},
 		deleteMovie(id) {
 			if (confirm('Czy na pewno chcesz usunąć ten film?')) {
-				MovieDataService.deleteMovie(id).then(() => {
-					this.refreshMovies()
-				})
+				MovieDataService.deleteMovie(id)
+					.then(() => {
+						this.refreshMovies()
+					})
+					.catch(error => {
+						alert(`Błąd w połączeniu z bazą danych, sprawdź API.\n\n Kod błędu ${error}`)
+					})
 			}
 		},
 		editMovie(movie) {
@@ -100,6 +108,8 @@ export default {
 		fetchMovies() {
 			MovieDataService.fetchMovies().then(() => {
 				this.refreshMovies()
+			}).catch(error => {
+				alert(`Nie udało się pobrać filmów z zewnętrznej bazy danych. Spróbuj później\n\n Kod błędu ${error}`)
 			})
 		},
 		handleModalClose() {
