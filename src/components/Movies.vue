@@ -10,7 +10,6 @@
 		</div>
 
 		<Teleport to="body">
-			<!-- use the modal component, pass in the prop -->
 			<modal :show="showModal" @close="handleModalClose">
 				<template #header>
 					<h3>Dodaj film</h3>
@@ -40,6 +39,7 @@
 						<td>{{ movie.rate }}</td>
 
 						<td>
+							<button class="btn btn-info mx-1" v-on:click="deleteMovie(movie.id)">Edytuj</button>
 							<button class="btn btn-danger" v-on:click="deleteMovie(movie.id)">Usuń</button>
 						</td>
 					</tr>

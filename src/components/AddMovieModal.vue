@@ -10,20 +10,40 @@
 					<form>
 						<div class="form-group">
 							<label for="title">Tytuł:</label>
-							<input type="text" class="form-control m-2" id="title" v-model="movie.title" />
+							<input type="text" class="form-control m-1" id="title" v-model="movie.title" />
+							<small class="mx-3 mb-4 d-block">
+								<span v-for="error of v$.movie.title.$errors" :key="error.$uid" class="validation-error-text">
+									<strong>{{ error.$message }}</strong>
+								</span>
+							</small>
 						</div>
 						<div class="form-group">
 							<label for="director">Reżyser:</label>
 							<input type="text" class="form-control m-2" id="director" v-model="movie.director" />
+							<small class="mx-3 mb-4 d-block">
+								<span v-for="error of v$.movie.director.$errors" :key="error.$uid" class="validation-error-text">
+									<strong>{{ error.$message }}</strong>
+								</span>
+							</small>
 						</div>
 						<div class="form-row">
-							<div class="form-group col-md-6">
+							<div class="form-group">
 								<label for="year">Rok wydania:</label>
 								<input type="number" class="form-control m-2" id="year" v-model="movie.year" />
+								<small class="mx-3 mb-4 d-block">
+									<span v-for="error of v$.movie.year.$errors" :key="error.$uid" class="validation-error-text">
+										<strong>{{ error.$message }}</strong>
+									</span>
+								</small>
 							</div>
-							<div class="form-group col-md-6">
+							<div class="form-group">
 								<label for="rate">Ocena:</label>
 								<input type="number" class="form-control m-2" id="rate" v-model="movie.rate" />
+								<small class="mx-3 mb-4 d-block">
+									<span v-for="error of v$.movie.rate.$errors" :key="error.$uid" class="validation-error-text">
+										<strong>{{ error.$message }}</strong>
+									</span>
+								</small>
 							</div>
 						</div>
 					</form>
@@ -36,13 +56,6 @@
 						</div>
 					</slot>
 				</div>
-				<p v-for="error of v$.$errors" :key="error.$uid">
-					<strong>{{ error.$validator }}</strong>
-					<small> on property</small>
-					<strong>{{ error.$property }}</strong>
-					<small> says:</small>
-					<strong>{{ error.$message }}</strong>
-				</p>
 			</div>
 		</div>
 	</Transition>
@@ -51,7 +64,7 @@
 <script>
 import MovieDataService from '../service/MovieDataService'
 import { useVuelidate } from '@vuelidate/core'
-import { required } from '@vuelidate/validators'
+import { required, maxLength, between, helpers } from '@vuelidate/validators'
 
 export default {
 	props: {
@@ -74,16 +87,20 @@ export default {
 		return {
 			movie: {
 				title: {
-					required,
+					required: helpers.withMessage('To pole musi być uzupełnione', required),
+					maxLength: helpers.withMessage('Maks 200 znaków', maxLength(200)),
 				},
 				director: {
-					required,
+					required: helpers.withMessage('To pole musi być uzupełnione', required),
+					maxLength: helpers.withMessage('Makso 40 znaków', maxLength(40)),
 				},
 				year: {
-					required,
+					required: helpers.withMessage('To pole musi być uzupełnione', required),
+					between: helpers.withMessage('Podany rok powinien być w zakresie 1900-2200', between(1900, 2200)),
 				},
 				rate: {
-					required,
+					required: helpers.withMessage('To pole musi być uzupełnione liczbą 1-10', required),
+					between: helpers.withMessage('Ocena musi być pomiędzy 1-10', between(1, 10)),
 				},
 			},
 		}
@@ -92,7 +109,6 @@ export default {
 		async addMovie() {
 			const isFormCorrect = await this.v$.$validate()
 			if (!isFormCorrect) {
-				alert('Validations error')
 				return
 			}
 

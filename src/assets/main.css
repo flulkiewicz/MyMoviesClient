@@ -142,4 +142,8 @@ tr th {
     transform: scale(1.1);
   }
 
+  .validation-error-text {
+    color: #ff0f0f;
+  }
+
 
