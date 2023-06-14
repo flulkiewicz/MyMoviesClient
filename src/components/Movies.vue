@@ -10,7 +10,7 @@
 		</div>
 
 		<Teleport to="body">
-			<modal :show="showModal" :selected="selectedMovie" @close="handleModalClose">
+			<modal :show="showModal" :selected="selectedMovie" :edit="isEditMode" @close="handleModalClose">
 				<template #header>
 					<h3>{{ modalHeader }}</h3>
 				</template>
@@ -51,7 +51,7 @@
 
 <script>
 import MovieDataService from '../service/MovieDataService'
-import Modal from './AddMovieModal.vue'
+import Modal from './MovieModal.vue'
 
 export default {
 	name: 'Movies',
@@ -60,6 +60,7 @@ export default {
 			movies: [],
 			message: '',
 			showModal: false,
+			isEditMode: false,
 			shouldRefresh: false,
 			selectedMovie: null,
 			modalHeader: null,
@@ -78,16 +79,20 @@ export default {
 		addMovie() {
 			this.modalHeader = 'Dodaj film'
 			this.showModal = true
+			this.isEditMode = false
 		},
 		updateMovie(id) {
 			this.$router.push(`/movie/${id}`)
 		},
 		deleteMovie(id) {
-			MovieDataService.deleteMovie(id).then(() => {
-				this.refreshMovies()
-			})
+			if (confirm('Czy na pewno chcesz usunąć ten film?')) {
+				MovieDataService.deleteMovie(id).then(() => {
+					this.refreshMovies()
+				})
+			}
 		},
 		editMovie(movie) {
+			this.isEditMode = true
 			this.modalHeader = 'Edytuj film'
 			this.selectedMovie = movie
 			this.showModal = true

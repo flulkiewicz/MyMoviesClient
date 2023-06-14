@@ -19,11 +19,10 @@ class MovieDataService {
     fetchMovies() {
         return axios.get(`${MOVIE_API_URL}/fetch`);
     }
-    /*
-    updateUser(id, movie) {
-        return axios.put(`${MOVIE_API_URL}/${id}`, movie);
+    
+    updateMovie(movie) {
+        return axios.put(`${MOVIE_API_URL}/`, movie);
     }
-    */
 
     createMovie(movie) {
         return axios.post(`${MOVIE_API_URL}/`, movie);

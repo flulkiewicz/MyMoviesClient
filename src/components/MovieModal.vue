@@ -51,8 +51,19 @@
 				<div class="modal-footer">
 					<slot name="footer">
 						<div class="btn-group" role="group" aria-label="Basic example">
-							<button class="btn btn-success modal-default-button px-4 text-white" @click="addMovie">Dodaj</button>
-							<button class="btn btn-info modal-default-button px-4 text-white" @click="$emit('close'), clearForm()">Cofnij</button>
+							<button
+								v-if="edit"
+								class="btn btn-success modal-default-button px-4 text-white"
+								@click="updateMovie"
+							>
+								Zapisz
+							</button>
+							<button v-else class="btn btn-success modal-default-button px-4 text-white" @click="addMovie">
+								Dodaj
+							</button>
+							<button class="btn btn-info modal-default-button px-4 text-white" @click="$emit('close'), clearForm()">
+								Cofnij
+							</button>
 						</div>
 					</slot>
 				</div>
@@ -69,7 +80,8 @@ import { required, maxLength, between, helpers } from '@vuelidate/validators'
 export default {
 	props: {
 		show: Boolean,
-		selected: Object
+		selected: Object,
+		edit: Boolean
 	},
 	setup() {
 		return { v$: useVuelidate() }
@@ -77,6 +89,7 @@ export default {
 	data() {
 		return {
 			movie: {
+				id: '',
 				title: '',
 				director: '',
 				year: '',
@@ -118,8 +131,20 @@ export default {
 				this.$emit('close')
 			})
 		},
+		async updateMovie() {
+			const isFormCorrect = await this.v$.$validate()
+			if (!isFormCorrect) {
+				return
+			}
+
+			MovieDataService.updateMovie(this.movie).then(() => {
+				this.clearForm()
+				this.$emit('close')
+			})
+		},
 		clearForm() {
 			this.movie = {
+				id: '',
 				title: '',
 				director: '',
 				year: '',
@@ -131,6 +156,7 @@ export default {
 		selected(newVal) {
 			if (newVal) {
 				this.movie = {
+					id: this.selected.id,
 					title: this.selected.title,
 					director: this.selected.director,
 					year: this.selected.year,
