@@ -1,13 +1,9 @@
 <template>
-	<div class="container bg-dark p-5 rounded text-orange">
-		<h3 class="mb-3 border-bottom-orange pb-3 px-2">Wszystkie filmy</h3>
+	<div class="container bg-dark p-5 rounded">
+		<h3 class="mb-3 border-bottom-orange pb-3 px-2 text-orange">Wszystkie filmy</h3>
 
-		<div class="btn-group" role="group" aria-label="Basic example">
-			<button id="show-modal" class="btn btn-lg btn-success mb-4" @click="addMovie()">Dodaj film</button>
-			<button type="button" class="btn btn-lg btn-secondary mb-4" v-on:click="fetchMovies()">
-				Pobierz filmy z API
-			</button>
-		</div>
+		<button id="show-modal" class="btn btn-lg mb-4 glow-on-hover" @click="addMovie()">Dodaj film</button>
+		<button type="button" class="btn btn-lg btn-secondary mb-4 mx-1" v-on:click="fetchMovies()">Pobierz filmy z API</button>
 
 		<Teleport to="body">
 			<modal :show="showModal" :selected="selectedMovie" :edit="isEditMode" @close="handleModalClose">
@@ -39,8 +35,10 @@
 						<td>{{ movie.rate }}</td>
 
 						<td>
-							<button class="btn btn-info mx-1" v-on:click="editMovie(movie)">Edytuj</button>
-							<button class="btn btn-danger" v-on:click="deleteMovie(movie.id)">Usuń</button>
+							<div class="btn-group" role="group" aria-label="Basic example">
+								<button class="btn btn-info mx-1 text-white" v-on:click="editMovie(movie)">Edytuj</button>
+								<button class="btn btn-danger" v-on:click="deleteMovie(movie.id)">Usuń</button>
+							</div>
 						</td>
 					</tr>
 				</tbody>
@@ -106,11 +104,13 @@ export default {
 			this.showModal = true
 		},
 		fetchMovies() {
-			MovieDataService.fetchMovies().then(() => {
-				this.refreshMovies()
-			}).catch(error => {
-				alert(`Nie udało się pobrać filmów z zewnętrznej bazy danych. Spróbuj później\n\n Kod błędu ${error}`)
-			})
+			MovieDataService.fetchMovies()
+				.then(() => {
+					this.refreshMovies()
+				})
+				.catch(error => {
+					alert(`Nie udało się pobrać filmów z zewnętrznej bazy danych. Spróbuj później\n\n Kod błędu ${error}`)
+				})
 		},
 		handleModalClose() {
 			this.showModal = false

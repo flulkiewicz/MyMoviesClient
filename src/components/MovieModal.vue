@@ -109,7 +109,7 @@ export default {
 					maxLength: helpers.withMessage('Makso 40 znaków', maxLength(40)),
 				},
 				year: {
-					required: helpers.withMessage('To pole musi być uzupełnione', required),
+					required: helpers.withMessage('To pole musi być uzupełnione rokiem w zakresie 1900-2200', required),
 					between: helpers.withMessage('Podany rok powinien być w zakresie 1900-2200', between(1900, 2200)),
 				},
 				rate: {
