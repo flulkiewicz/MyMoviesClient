@@ -36,6 +36,13 @@
 						</div>
 					</slot>
 				</div>
+				<p v-for="error of v$.$errors" :key="error.$uid">
+					<strong>{{ error.$validator }}</strong>
+					<small> on property</small>
+					<strong>{{ error.$property }}</strong>
+					<small> says:</small>
+					<strong>{{ error.$message }}</strong>
+				</p>
 			</div>
 		</div>
 	</Transition>
@@ -50,6 +57,9 @@ export default {
 	props: {
 		show: Boolean,
 	},
+	setup() {
+		return { v$: useVuelidate() }
+	},
 	data() {
 		return {
 			movie: {
@@ -58,36 +68,38 @@ export default {
 				year: '',
 				rate: '',
 			},
-			v$: useVuelidate(),
 		}
 	},
 	validations() {
 		return {
-			title: {
-				required,
-			},
-			director: {
-				required,
-			},
-			year: {
-				required,
-			},
-			rate: {
-				required,
+			movie: {
+				title: {
+					required,
+				},
+				director: {
+					required,
+				},
+				year: {
+					required,
+				},
+				rate: {
+					required,
+				},
 			},
 		}
 	},
 	methods: {
-		addMovie() {
-			this.v$.$validate()
-			if (!this.v$.$error) {
-				MovieDataService.createMovie(this.movie).then(() => {
-					this.clearForm()
-					this.$emit('close')
-				})
-			} else {
-				alert('Validation error')
+		async addMovie() {
+			const isFormCorrect = await this.v$.$validate()
+			if (!isFormCorrect) {
+				alert('Validations error')
+				return
 			}
+
+			MovieDataService.createMovie(this.movie).then(() => {
+				this.clearForm()
+				this.$emit('close')
+			})
 		},
 		clearForm() {
 			this.movie = {
