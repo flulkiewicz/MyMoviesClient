@@ -3,13 +3,13 @@
 		<div v-if="show" class="modal-mask">
 			<div class="modal-container">
 				<div class="modal-header">
-					<slot name="header">Dodaj film</slot>
+					<slot name="header"></slot>
 				</div>
 
 				<div class="modal-body text-white">
 					<form>
 						<div class="form-group">
-							<label for="title">Tytuł:</label>
+							<label for="title">Tytuł: </label>
 							<input type="text" class="form-control m-1" id="title" v-model="movie.title" />
 							<small class="mx-3 mb-4 d-block">
 								<span v-for="error of v$.movie.title.$errors" :key="error.$uid" class="validation-error-text">
@@ -51,8 +51,8 @@
 				<div class="modal-footer">
 					<slot name="footer">
 						<div class="btn-group" role="group" aria-label="Basic example">
-							<button class="btn btn-success modal-default-button" @click="addMovie">Dodaj</button>
-							<button class="btn btn-warning modal-default-button" @click="$emit('close'), clearForm()">Cofnij</button>
+							<button class="btn btn-success modal-default-button px-4 text-white" @click="addMovie">Dodaj</button>
+							<button class="btn btn-info modal-default-button px-4 text-white" @click="$emit('close'), clearForm()">Cofnij</button>
 						</div>
 					</slot>
 				</div>
@@ -69,6 +69,7 @@ import { required, maxLength, between, helpers } from '@vuelidate/validators'
 export default {
 	props: {
 		show: Boolean,
+		selectedMovie: Object
 	},
 	setup() {
 		return { v$: useVuelidate() }
@@ -123,6 +124,18 @@ export default {
 				director: '',
 				year: '',
 				rate: '',
+			}
+		},
+	},
+	watch: {
+		selectedMovie(newVal) {
+			if (newVal) {
+				this.movie = {
+					title: '',
+					director: '',
+					year: '',
+					rate: '',
+				}
 			}
 		},
 	},

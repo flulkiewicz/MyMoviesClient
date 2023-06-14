@@ -3,7 +3,7 @@
 		<h3 class="mb-3 border-bottom-orange pb-3 px-2">Wszystkie filmy</h3>
 
 		<div class="btn-group" role="group" aria-label="Basic example">
-			<button id="show-modal" class="btn btn-lg btn-success mb-4" @click="showModal = true">Dodaj film</button>
+			<button id="show-modal" class="btn btn-lg btn-success mb-4" @click="addMovie()">Dodaj film</button>
 			<button type="button" class="btn btn-lg btn-secondary mb-4" v-on:click="fetchMovies()">
 				Pobierz filmy z API
 			</button>
@@ -12,7 +12,7 @@
 		<Teleport to="body">
 			<modal :show="showModal" @close="handleModalClose">
 				<template #header>
-					<h3>Dodaj film</h3>
+					<h3>{{ modalHeader }}</h3>
 				</template>
 			</modal>
 		</Teleport>
@@ -39,12 +39,13 @@
 						<td>{{ movie.rate }}</td>
 
 						<td>
-							<button class="btn btn-info mx-1" v-on:click="deleteMovie(movie.id)">Edytuj</button>
+							<button class="btn btn-info mx-1" v-on:click="editMovie(movie)">Edytuj</button>
 							<button class="btn btn-danger" v-on:click="deleteMovie(movie.id)">Usuń</button>
 						</td>
 					</tr>
 				</tbody>
 			</table>
+			<Modal :selectedMovie="selectedMovie"></Modal>
 		</div>
 	</div>
 </template>
@@ -61,6 +62,8 @@ export default {
 			message: '',
 			showModal: false,
 			shouldRefresh: false,
+			selectedMovie: null,
+			modalHeader: null,
 		}
 	},
 	components: {
@@ -73,6 +76,10 @@ export default {
 				this.movies = result.data
 			})
 		},
+		addMovie() {
+			this.modalHeader = 'Dodaj film'
+			this.showModal = true
+		},
 		updateMovie(id) {
 			this.$router.push(`/movie/${id}`)
 		},
@@ -81,6 +88,11 @@ export default {
 				this.refreshMovies()
 			})
 		},
+		editMovie(movie) {
+			this.modalHeader = 'Edytuj film'
+			this.selectedMovie = movie
+			this.showModal = true
+		},
 		fetchMovies() {
 			MovieDataService.fetchMovies().then(() => {
 				this.refreshMovies()
@@ -88,6 +100,7 @@ export default {
 		},
 		handleModalClose() {
 			this.showModal = false
+			this.selectedMovie = null
 			this.shouldRefresh = true
 		},
 	},
