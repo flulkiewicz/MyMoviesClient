@@ -69,7 +69,7 @@ import { required, maxLength, between, helpers } from '@vuelidate/validators'
 export default {
 	props: {
 		show: Boolean,
-		selectedMovie: Object
+		selected: Object
 	},
 	setup() {
 		return { v$: useVuelidate() }
@@ -128,13 +128,13 @@ export default {
 		},
 	},
 	watch: {
-		selectedMovie(newVal) {
+		selected(newVal) {
 			if (newVal) {
 				this.movie = {
-					title: '',
-					director: '',
-					year: '',
-					rate: '',
+					title: this.selected.title,
+					director: this.selected.director,
+					year: this.selected.year,
+					rate: this.selected.rate,
 				}
 			}
 		},

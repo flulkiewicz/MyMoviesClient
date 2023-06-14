@@ -10,7 +10,7 @@
 		</div>
 
 		<Teleport to="body">
-			<modal :show="showModal" @close="handleModalClose">
+			<modal :show="showModal" :selected="selectedMovie" @close="handleModalClose">
 				<template #header>
 					<h3>{{ modalHeader }}</h3>
 				</template>
@@ -45,7 +45,6 @@
 					</tr>
 				</tbody>
 			</table>
-			<Modal :selectedMovie="selectedMovie"></Modal>
 		</div>
 	</div>
 </template>
