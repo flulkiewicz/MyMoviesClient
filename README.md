@@ -25,3 +25,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### Application runs at local port 8081
 Local: http://localhost:8081/
+
+
+### API is here: https://github.com/flulkiewicz/MyMoviesAPI
